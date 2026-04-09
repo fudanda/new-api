@@ -840,6 +840,124 @@ html.dark .with-pastel-balls::before {
   mix-blend-mode: screen;
 }
 
+/* ==================== 首页内容改版样式 ==================== */
+.home-content-refresh {
+  width: 100%;
+  min-height: 100%;
+  padding: clamp(40px, 6vw, 72px) 16px 56px;
+  background:
+    radial-gradient(circle at top center, rgba(255, 245, 240, 0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #f5f4f4 0%, #f8f2f2 100%);
+}
+
+.home-content-refresh-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.home-content-refresh-title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(52px, 6.5vw, 88px);
+  line-height: 1.06;
+  color: #ff5a1f;
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: 0.02em;
+}
+
+.home-content-refresh-subtitle {
+  margin: clamp(14px, 2.4vw, 28px) auto 0;
+  max-width: 980px;
+  text-align: center;
+  font-size: clamp(26px, 3.4vw, 48px);
+  line-height: 1.45;
+  color: #2c4563;
+}
+
+.home-content-refresh-grid {
+  margin-top: clamp(26px, 4vw, 46px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.home-content-refresh-card {
+  border-radius: 14px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  padding: clamp(18px, 2.2vw, 28px) clamp(16px, 2vw, 24px);
+  box-shadow: 0 6px 20px rgba(44, 69, 99, 0.08);
+  backdrop-filter: blur(3px);
+}
+
+.home-content-refresh-card-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.35;
+  color: #2f4056;
+  font-weight: 700;
+}
+
+.home-content-refresh-card-icon {
+  color: #ff5426;
+  font-size: 0.95em;
+  flex-shrink: 0;
+}
+
+.home-content-refresh-card-desc {
+  margin: clamp(12px, 1.4vw, 16px) 0 0;
+  font-size: clamp(18px, 1.75vw, 25px);
+  line-height: 1.68;
+  color: #526175;
+}
+
+@media (max-width: 960px) {
+  .home-content-refresh-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .home-content-refresh-subtitle {
+    max-width: 100%;
+  }
+
+  .home-content-refresh-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+html.dark .home-content-refresh {
+  background:
+    radial-gradient(circle at top center, rgba(255, 94, 43, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, #151a23 0%, #0f141b 100%);
+}
+
+html.dark .home-content-refresh-title {
+  color: #ff7b4a;
+}
+
+html.dark .home-content-refresh-subtitle {
+  color: #d3dfef;
+}
+
+html.dark .home-content-refresh-card {
+  background-color: rgba(26, 33, 45, 0.9);
+  border-color: rgba(97, 113, 132, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+html.dark .home-content-refresh-card-title {
+  color: #f2f5fb;
+}
+
+html.dark .home-content-refresh-card-desc {
+  color: #b4c0d4;
+}
+
 /* ==================== 表格卡片滚动设置 ==================== */
 .table-scroll-card {
   display: flex;
