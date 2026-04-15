@@ -629,6 +629,7 @@ const RechargeCard = ({
             t={t}
             loading={subscriptionLoading}
             plans={subscriptionPlans}
+            userGroup={userState?.user?.group}
             payMethods={payMethods}
             enableOnlineTopUp={enableOnlineTopUp}
             enableStripeTopUp={enableStripeTopUp}
