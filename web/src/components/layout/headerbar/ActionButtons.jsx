@@ -28,6 +28,7 @@ const ActionButtons = ({
   isNewYear,
   unreadCount,
   onNoticeOpen,
+  useLightText,
   theme,
   onThemeToggle,
   currentLang,
@@ -41,20 +42,29 @@ const ActionButtons = ({
   t,
 }) => {
   return (
-    <div className='flex items-center gap-2 md:gap-3'>
-      <NewYearButton isNewYear={isNewYear} />
+    <div
+      className={`flex items-center ${useLightText ? 'gap-1.5 md:gap-2' : 'gap-2 md:gap-3'}`}
+    >
+      <NewYearButton isNewYear={isNewYear} useLightText={useLightText} />
 
       <NotificationButton
         unreadCount={unreadCount}
         onNoticeOpen={onNoticeOpen}
+        useLightText={useLightText}
         t={t}
       />
 
-      <ThemeToggle theme={theme} onThemeToggle={onThemeToggle} t={t} />
+      <ThemeToggle
+        theme={theme}
+        onThemeToggle={onThemeToggle}
+        useLightText={useLightText}
+        t={t}
+      />
 
       <LanguageSelector
         currentLang={currentLang}
         onLanguageChange={onLanguageChange}
+        useLightText={useLightText}
         t={t}
       />
 
@@ -64,6 +74,7 @@ const ActionButtons = ({
         isMobile={isMobile}
         isSelfUseMode={isSelfUseMode}
         logout={logout}
+        useLightText={useLightText}
         navigate={navigate}
         t={t}
       />

@@ -288,11 +288,14 @@ export default function GeneralSettings(props) {
                   <Form.Select.Option value='CNY'>
                     CNY (¥)
                   </Form.Select.Option>
-                  {showTokensOption && (
+                  <Form.Select.Option value='TOKENS'>
+                      Tokens
+                  </Form.Select.Option>
+                  {/* {showTokensOption && (
                     <Form.Select.Option value='TOKENS'>
                       Tokens
                     </Form.Select.Option>
-                  )}
+                  )} */}
                   <Form.Select.Option value='CUSTOM'>
                     {t('自定义货币')}
                   </Form.Select.Option>

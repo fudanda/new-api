@@ -25,19 +25,36 @@ const Navigation = ({
   mainNavLinks,
   isMobile,
   isLoading,
+  useLightText,
   userState,
   pricingRequireAuth,
 }) => {
   const renderNavLinks = () => {
-    const baseClasses =
-      'flex-shrink-0 flex items-center gap-1 font-semibold rounded-md transition-all duration-200 ease-in-out';
-    const hoverClasses = 'hover:text-semi-color-primary';
-    const spacingClasses = isMobile ? 'p-1' : 'p-2';
+    const baseClasses = useLightText
+      ? 'flex-shrink-0 flex items-center gap-1 rounded-full text-[15px] font-semibold tracking-[0.01em] transition-all duration-200 ease-in-out'
+      : 'flex-shrink-0 flex items-center gap-1 font-semibold rounded-md transition-all duration-200 ease-in-out';
+    const hoverClasses = useLightText
+      ? 'text-white/92 hover:text-white hover:bg-white/8'
+      : 'hover:text-semi-color-primary';
+    const spacingClasses = useLightText
+      ? isMobile
+        ? 'px-2.5 py-1.5'
+        : 'px-3 py-2'
+      : isMobile
+        ? 'p-1'
+        : 'p-2';
 
     const commonLinkClasses = `${baseClasses} ${spacingClasses} ${hoverClasses}`;
 
     return mainNavLinks.map((link) => {
-      const linkContent = <span>{link.text}</span>;
+      const linkContent = (
+        <span
+          className={useLightText ? '!text-white' : undefined}
+          style={useLightText ? { color: '#ffffff' } : undefined}
+        >
+          {link.text}
+        </span>
+      );
 
       if (link.isExternal) {
         return (
@@ -70,7 +87,9 @@ const Navigation = ({
   };
 
   return (
-    <nav className='flex flex-1 items-center gap-1 lg:gap-2 mx-2 md:mx-4 overflow-x-auto whitespace-nowrap scrollbar-hide'>
+    <nav
+      className={`flex flex-1 items-center overflow-x-auto whitespace-nowrap scrollbar-hide ${useLightText ? 'gap-1.5 mx-3 md:mx-6' : 'gap-1 lg:gap-2 mx-2 md:mx-4'}`}
+    >
       <SkeletonWrapper
         loading={isLoading}
         type='navigation'

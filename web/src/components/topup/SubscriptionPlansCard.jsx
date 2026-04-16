@@ -73,6 +73,7 @@ const SubscriptionPlansCard = ({
   t,
   loading = false,
   plans = [],
+  userGroup = '',
   payMethods = [],
   enableOnlineTopUp = false,
   enableStripeTopUp = false,
@@ -91,6 +92,22 @@ const SubscriptionPlansCard = ({
   const [refreshing, setRefreshing] = useState(false);
 
   const epayMethods = useMemo(() => getEpayMethods(payMethods), [payMethods]);
+  const isVipUser = useMemo(
+    () =>
+      String(userGroup || '')
+        .split(',')
+        .map((group) => group.trim().toLowerCase())
+        .includes('vip'),
+    [userGroup],
+  );
+  const filteredPlans = useMemo(
+    () =>
+      (plans || []).filter((item) => {
+        const planId = Number(item?.plan?.id);
+        return isVipUser ? planId !== 1 : planId === 1;
+      }),
+    [isVipUser, plans],
+  );
 
   const openBuy = (p) => {
     setSelectedPlan(p);
@@ -477,9 +494,9 @@ const SubscriptionPlansCard = ({
           </Card>
 
           {/* 可购买套餐 - 标准定价卡片 */}
-          {plans.length > 0 ? (
+          {filteredPlans.length > 0 ? (
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 w-full px-1'>
-              {plans.map((p, index) => {
+              {filteredPlans.map((p, index) => {
                 const plan = p?.plan;
                 const totalAmount = Number(plan?.total_amount || 0);
                 const { symbol, rate } = getCurrencyConfig();
@@ -488,7 +505,7 @@ const SubscriptionPlansCard = ({
                 const displayPrice = convertedPrice.toFixed(
                   Number.isInteger(convertedPrice) ? 0 : 2,
                 );
-                const isPopular = index === 0 && plans.length > 1;
+                const isPopular = index === 0 && filteredPlans.length > 1;
                 const limit = Number(plan?.max_purchase_per_user || 0);
                 const limitLabel = limit > 0 ? `${t('限购')} ${limit}` : null;
                 const totalLabel =

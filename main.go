@@ -43,6 +43,9 @@ var indexPage []byte
 //go:embed lzclaw.html
 var lzclawPage []byte
 
+//go:embed public/qrcode.jpg
+var lzclawQRCode []byte
+
 func main() {
 	startTime := time.Now()
 
@@ -186,7 +189,7 @@ func main() {
 	// InjectGoogleAnalytics()
 
 	// 设置路由
-	router.SetRouter(server, buildFS, indexPage, lzclawPage)
+	router.SetRouter(server, buildFS, indexPage, lzclawPage, lzclawQRCode)
 	var port = os.Getenv("PORT")
 	if port == "" {
 		port = strconv.Itoa(*common.Port)

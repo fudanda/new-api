@@ -43,6 +43,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     docsLink,
     isDemoSiteMode,
     isConsoleRoute,
+    isHomeRoute,
     theme,
     headerNavModules,
     pricingRequireAuth,
@@ -63,9 +64,18 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   } = useNotifications(statusState);
 
   const { mainNavLinks } = useNavigation(t, docsLink, headerNavModules);
+  const headerClasses = isHomeRoute
+    ? 'text-white sticky top-0 z-50 transition-colors duration-300 bg-[#081518]/72  border-white/10 backdrop-blur-xl'
+    : 'text-semi-color-text-0 sticky top-0 z-50 transition-colors duration-300 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-lg';
+  const containerClasses = isHomeRoute
+    ? 'w-full max-w-[1160px] mx-auto px-4 sm:px-5 md:px-6'
+    : 'w-full px-2';
+  const innerClasses = isHomeRoute
+    ? 'flex items-center justify-between h-[68px]'
+    : 'flex items-center justify-between h-16';
 
   return (
-    <header className='text-semi-color-text-0 sticky top-0 z-50 transition-colors duration-300 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-lg'>
+    <header className={headerClasses}>
       <NoticeModal
         visible={noticeVisible}
         onClose={handleNoticeClose}
@@ -74,14 +84,15 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
         unreadKeys={getUnreadKeys()}
       />
 
-      <div className='w-full px-2'>
-        <div className='flex items-center justify-between h-16'>
+      <div className={containerClasses}>
+        <div className={innerClasses}>
           <div className='flex items-center'>
             <MobileMenuButton
               isConsoleRoute={isConsoleRoute}
               isMobile={isMobile}
               drawerOpen={drawerOpen}
               collapsed={collapsed}
+              useLightText={isHomeRoute}
               onToggle={handleMobileMenuToggle}
               t={t}
             />
@@ -89,6 +100,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
             <HeaderLogo
               isMobile={isMobile}
               isConsoleRoute={isConsoleRoute}
+              useLightText={isHomeRoute}
               logo={logo}
               logoLoaded={logoLoaded}
               isLoading={isLoading}
@@ -103,6 +115,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
             mainNavLinks={mainNavLinks}
             isMobile={isMobile}
             isLoading={isLoading}
+            useLightText={isHomeRoute}
             userState={userState}
             pricingRequireAuth={pricingRequireAuth}
           />
@@ -111,6 +124,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
             isNewYear={isNewYear}
             unreadCount={unreadCount}
             onNoticeOpen={handleNoticeOpen}
+            useLightText={isHomeRoute}
             theme={theme}
             onThemeToggle={handleThemeToggle}
             currentLang={currentLang}

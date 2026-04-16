@@ -20,7 +20,6 @@ For commercial licensing, please contact support@quantumnous.com
 import { useMemo } from 'react';
 import { Wallet, Activity, Zap, Gauge } from 'lucide-react';
 import {
-  IconMoneyExchangeStroked,
   IconHistogram,
   IconCoinMoneyStroked,
   IconTextStroked,
@@ -48,14 +47,6 @@ export const useDashboardStats = (
         title: createSectionTitle(Wallet, t('账户数据')),
         color: 'bg-blue-50',
         items: [
-          {
-            title: t('当前余额'),
-            value: renderQuota(userState?.user?.quota),
-            icon: <IconMoneyExchangeStroked />,
-            avatarColor: 'blue',
-            trendData: [],
-            trendColor: '#3b82f6',
-          },
           {
             title: t('历史消耗'),
             value: renderQuota(userState?.user?.used_quota),

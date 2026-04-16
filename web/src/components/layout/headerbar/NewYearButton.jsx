@@ -21,10 +21,14 @@ import React from 'react';
 import { Button, Dropdown } from '@douyinfe/semi-ui';
 import fireworks from 'react-fireworks';
 
-const NewYearButton = ({ isNewYear }) => {
+const NewYearButton = ({ isNewYear, useLightText }) => {
   if (!isNewYear) {
     return null;
   }
+
+  const triggerClasses = useLightText
+    ? '!w-10 !h-10 !min-w-0 !p-0 !text-white focus:!bg-white/10 !rounded-full !bg-white/7 hover:!bg-white/14 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
+    : '!p-1.5 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700 rounded-full';
 
   const handleNewYearClick = () => {
     fireworks.init('root', {});
@@ -53,7 +57,7 @@ const NewYearButton = ({ isNewYear }) => {
         type='tertiary'
         icon={<span className='text-xl'>🎉</span>}
         aria-label='New Year'
-        className='!p-1.5 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700 rounded-full'
+        className={triggerClasses}
       />
     </Dropdown>
   );

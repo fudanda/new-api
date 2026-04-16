@@ -20,6 +20,7 @@ import { getCurrencyConfig } from './render';
 
 export const getQuotaPerUnit = () => {
   const raw = parseFloat(localStorage.getItem('quota_per_unit') || '1');
+  console.log('raw', raw, typeof raw);
   return Number.isFinite(raw) && raw > 0 ? raw : 1;
 };
 
@@ -41,6 +42,7 @@ export const displayAmountToQuota = (amount) => {
   const sign = Math.sign(val);
   const abs = Math.abs(val);
   const { type, rate } = getCurrencyConfig();
+  console.log(type, rate);
   if (type === 'TOKENS') return Math.round(val);
   const usd = type === 'USD' ? abs : abs / (rate || 1);
   return sign * Math.round(usd * getQuotaPerUnit());

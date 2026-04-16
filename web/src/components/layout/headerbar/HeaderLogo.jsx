@@ -25,6 +25,7 @@ import SkeletonWrapper from '../components/SkeletonWrapper';
 const HeaderLogo = ({
   isMobile,
   isConsoleRoute,
+  useLightText,
   logo,
   logoLoaded,
   isLoading,
@@ -38,7 +39,10 @@ const HeaderLogo = ({
   }
 
   return (
-    <Link to='/' className='group flex items-center gap-2'>
+    <Link
+      to='/'
+      className={`group flex items-center gap-2 ${useLightText ? 'text-white' : ''}`}
+    >
       <div className='relative w-8 h-8 md:w-8 md:h-8'>
         <SkeletonWrapper loading={isLoading || !logoLoaded} type='image' />
         <img
@@ -58,6 +62,7 @@ const HeaderLogo = ({
             <Typography.Title
               heading={4}
               className='!text-lg !font-semibold !mb-0'
+              style={useLightText ? { color: '#ffffff' } : undefined}
             >
               {systemName}
             </Typography.Title>

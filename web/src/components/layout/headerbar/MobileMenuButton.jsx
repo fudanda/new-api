@@ -26,12 +26,17 @@ const MobileMenuButton = ({
   isMobile,
   drawerOpen,
   collapsed,
+  useLightText,
   onToggle,
   t,
 }) => {
   if (!isConsoleRoute || !isMobile) {
     return null;
   }
+
+  const triggerClasses = useLightText
+    ? '!w-10 !h-10 !min-w-0 !p-0 !text-white focus:!bg-white/10 !rounded-full !bg-white/7 hover:!bg-white/14 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
+    : '!p-2 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700';
 
   return (
     <Button
@@ -48,7 +53,7 @@ const MobileMenuButton = ({
       onClick={onToggle}
       theme='borderless'
       type='tertiary'
-      className='!p-2 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700'
+      className={triggerClasses}
     />
   );
 };

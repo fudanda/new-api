@@ -85,6 +85,8 @@ var SMTPAccount = ""
 var SMTPFrom = ""
 var SMTPToken = ""
 
+var LZClawDownloadVersion = "2026.4.13"
+
 var GitHubClientId = ""
 var GitHubClientSecret = ""
 var LinuxDOClientId = ""

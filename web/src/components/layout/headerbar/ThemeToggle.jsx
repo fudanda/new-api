@@ -22,34 +22,38 @@ import { Button, Dropdown } from '@douyinfe/semi-ui';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useActualTheme } from '../../../context/Theme';
 
-const ThemeToggle = ({ theme, onThemeToggle, t }) => {
+const ThemeToggle = ({ theme, onThemeToggle, useLightText, t }) => {
   const actualTheme = useActualTheme();
+  const iconColor = useLightText ? '#ffffff' : '#000000';
+  const triggerClasses = useLightText
+    ? '!w-10 !h-10 !min-w-0 !p-0 !text-white focus:!bg-white/10 !rounded-full !bg-white/7 hover:!bg-white/14 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
+    : '!p-1.5 !text-current focus:!bg-semi-color-fill-1 !rounded-full !bg-semi-color-fill-0 hover:!bg-semi-color-fill-1';
 
   const themeOptions = useMemo(
     () => [
       {
         key: 'light',
-        icon: <Sun size={18} />,
-        buttonIcon: <Sun size={18} />,
+        icon: <Sun size={18} color={iconColor} />,
+        buttonIcon: <Sun size={18} color={iconColor} />,
         label: t('浅色模式'),
         description: t('始终使用浅色主题'),
       },
       {
         key: 'dark',
-        icon: <Moon size={18} />,
-        buttonIcon: <Moon size={18} />,
+        icon: <Moon size={18} color={iconColor} />,
+        buttonIcon: <Moon size={18} color={iconColor} />,
         label: t('深色模式'),
         description: t('始终使用深色主题'),
       },
       {
         key: 'auto',
-        icon: <Monitor size={18} />,
-        buttonIcon: <Monitor size={18} />,
+        icon: <Monitor size={18} color={iconColor} />,
+        buttonIcon: <Monitor size={18} color={iconColor} />,
         label: t('自动模式'),
         description: t('跟随系统主题设置'),
       },
     ],
-    [t],
+    [iconColor, t],
   );
 
   const getItemClassName = (isSelected) =>
@@ -101,7 +105,7 @@ const ThemeToggle = ({ theme, onThemeToggle, t }) => {
           aria-label={t('切换主题')}
           theme='borderless'
           type='tertiary'
-          className='!p-1.5 !text-current focus:!bg-semi-color-fill-1 !rounded-full !bg-semi-color-fill-0 hover:!bg-semi-color-fill-1'
+          className={triggerClasses}
         />
       </span>
     </Dropdown>

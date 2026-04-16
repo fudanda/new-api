@@ -21,7 +21,15 @@ import React from 'react';
 import { Button, Dropdown } from '@douyinfe/semi-ui';
 import { Languages } from 'lucide-react';
 
-const LanguageSelector = ({ currentLang, onLanguageChange, t }) => {
+const LanguageSelector = ({
+  currentLang,
+  onLanguageChange,
+  useLightText,
+  t,
+}) => {
+  const triggerClasses = useLightText
+    ? '!w-10 !h-10 !min-w-0 !p-0 !text-white focus:!bg-white/10 !rounded-full !bg-white/7 hover:!bg-white/14 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
+    : '!p-1.5 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700 !rounded-full !bg-semi-color-fill-0 dark:!bg-semi-color-fill-1 hover:!bg-semi-color-fill-1 dark:hover:!bg-semi-color-fill-2';
   return (
     <Dropdown
       position='bottomRight'
@@ -73,11 +81,11 @@ const LanguageSelector = ({ currentLang, onLanguageChange, t }) => {
       }
     >
       <Button
-        icon={<Languages size={18} />}
+        icon={<Languages size={18} color={useLightText ? '#ffffff' : undefined} />}
         aria-label={t('common.changeLanguage')}
         theme='borderless'
         type='tertiary'
-        className='!p-1.5 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700 !rounded-full !bg-semi-color-fill-0 dark:!bg-semi-color-fill-1 hover:!bg-semi-color-fill-1 dark:hover:!bg-semi-color-fill-2'
+        className={triggerClasses}
       />
     </Dropdown>
   );

@@ -89,6 +89,7 @@ export const useHeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   }, [headerNavModules]);
 
   const isConsoleRoute = location.pathname.startsWith('/console');
+  const isHomeRoute = location.pathname === '/';
 
   const theme = useTheme();
   const actualTheme = useActualTheme();
@@ -234,6 +235,7 @@ export const useHeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     docsLink,
     isDemoSiteMode,
     isConsoleRoute,
+    isHomeRoute,
     theme,
     drawerOpen,
     headerNavModules,
