@@ -519,6 +519,12 @@ func (user *User) Edit(updatePassword bool) error {
 	}
 
 	newUser := *user
+	oldGroup, err := GetUserGroup(user.Id, true)
+	if err != nil {
+		return err
+	}
+	oldGroup = strings.TrimSpace(oldGroup)
+	newGroup := strings.TrimSpace(newUser.Group)
 	updates := map[string]interface{}{
 		"username":     newUser.Username,
 		"display_name": newUser.DisplayName,
@@ -532,6 +538,11 @@ func (user *User) Edit(updatePassword bool) error {
 	DB.First(&user, user.Id)
 	if err = DB.Model(user).Updates(updates).Error; err != nil {
 		return err
+	}
+	if oldGroup != "" && newGroup != "" && oldGroup != newGroup {
+		if err := SyncUserTokensGroupByUserGroupChangeTx(nil, user.Id, oldGroup, newGroup); err != nil {
+			return err
+		}
 	}
 
 	// Update cache

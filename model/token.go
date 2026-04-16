@@ -439,6 +439,56 @@ func CountUserTokens(userId int) (int64, error) {
 	return total, err
 }
 
+// SyncUserTokensGroupByUserGroupChangeTx migrates token group values when user group changes.
+// Only tokens whose group equals oldGroup will be updated to newGroup.
+func SyncUserTokensGroupByUserGroupChangeTx(tx *gorm.DB, userId int, oldGroup string, newGroup string) error {
+	oldGroup = strings.TrimSpace(oldGroup)
+	newGroup = strings.TrimSpace(newGroup)
+	if userId <= 0 || oldGroup == "" || newGroup == "" || oldGroup == newGroup {
+		return nil
+	}
+
+	query := DB
+	if tx != nil {
+		query = tx
+	}
+
+	var tokens []Token
+	if err := query.Select("id", commonKeyCol).
+		Where("user_id = ? AND "+commonGroupCol+" = ?", userId, oldGroup).
+		Find(&tokens).Error; err != nil {
+		return err
+	}
+	if len(tokens) == 0 {
+		return nil
+	}
+
+	if err := query.Model(&Token{}).
+		Where("user_id = ? AND "+commonGroupCol+" = ?", userId, oldGroup).
+		Update("group", newGroup).Error; err != nil {
+		return err
+	}
+
+	if common.RedisEnabled {
+		tokenKeys := make([]string, 0, len(tokens))
+		for _, t := range tokens {
+			if t.Key != "" {
+				tokenKeys = append(tokenKeys, t.Key)
+			}
+		}
+		if len(tokenKeys) > 0 {
+			gopool.Go(func() {
+				for _, key := range tokenKeys {
+					if err := cacheDeleteToken(key); err != nil {
+						common.SysLog("failed to delete token cache: " + err.Error())
+					}
+				}
+			})
+		}
+	}
+	return nil
+}
+
 // BatchDeleteTokens 删除指定用户的一组令牌，返回成功删除数量
 func BatchDeleteTokens(ids []int, userId int) (int, error) {
 	if len(ids) == 0 {
