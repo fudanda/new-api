@@ -59,7 +59,7 @@ const TopUp = () => {
   const [enableStripeTopUp, setEnableStripeTopUp] = useState(
     statusState?.status?.enable_stripe_topup || false,
   );
-  const [statusLoading, setStatusLoading] = useState(true);
+  const statusLoading = !statusState?.status;
 
   // Creem 相关状态
   const [creemProducts, setCreemProducts] = useState([]);
@@ -86,8 +86,6 @@ const TopUp = () => {
   // 订阅相关
   const [subscriptionPlans, setSubscriptionPlans] = useState([]);
   const [subscriptionLoading, setSubscriptionLoading] = useState(true);
-  const [billingPreference, setBillingPreference] =
-    useState('subscription_first');
   const [activeSubscriptions, setActiveSubscriptions] = useState([]);
   const [allSubscriptions, setAllSubscriptions] = useState([]);
 
@@ -368,9 +366,17 @@ const TopUp = () => {
     try {
       const res = await API.get('/api/subscription/self');
       if (res.data?.success) {
-        setBillingPreference(
-          res.data.data?.billing_preference || 'subscription_first',
-        );
+        const serverPreference =
+          res.data.data?.billing_preference || 'subscription_first';
+        if (serverPreference !== 'subscription_first') {
+          try {
+            await API.put('/api/subscription/self/preference', {
+              billing_preference: 'subscription_first',
+            });
+          } catch (error) {
+            // Ignore correction errors to avoid interrupting page rendering.
+          }
+        }
         // Active subscriptions
         const activeSubs = res.data.data?.subscriptions || [];
         setActiveSubscriptions(activeSubs);
@@ -380,28 +386,6 @@ const TopUp = () => {
       }
     } catch (e) {
       // ignore
-    }
-  };
-
-  const updateBillingPreference = async (pref) => {
-    const previousPref = billingPreference;
-    setBillingPreference(pref);
-    try {
-      const res = await API.put('/api/subscription/self/preference', {
-        billing_preference: pref,
-      });
-      if (res.data?.success) {
-        showSuccess(t('更新成功'));
-        const normalizedPref =
-          res.data?.data?.billing_preference || pref || previousPref;
-        setBillingPreference(normalizedPref);
-      } else {
-        showError(res.data?.message || t('更新失败'));
-        setBillingPreference(previousPref);
-      }
-    } catch (e) {
-      showError(t('请求失败'));
-      setBillingPreference(previousPref);
     }
   };
 
@@ -550,8 +534,6 @@ const TopUp = () => {
       // setTopUpCount(minTopUpValue);
       setTopUpLink(statusState.status.top_up_link || '');
       setPriceRatio(statusState.status.price || 1);
-
-      setStatusLoading(false);
     }
   }, [statusState?.status]);
 
@@ -749,8 +731,6 @@ const TopUp = () => {
           onOpenHistory={handleOpenHistory}
           subscriptionLoading={subscriptionLoading}
           subscriptionPlans={subscriptionPlans}
-          billingPreference={billingPreference}
-          onChangeBillingPreference={updateBillingPreference}
           activeSubscriptions={activeSubscriptions}
           allSubscriptions={allSubscriptions}
           reloadSubscriptionSelf={getSubscriptionSelf}

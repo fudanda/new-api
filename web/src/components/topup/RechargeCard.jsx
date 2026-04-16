@@ -89,8 +89,6 @@ const RechargeCard = ({
   waffoPayMethods,
   subscriptionLoading = false,
   subscriptionPlans = [],
-  billingPreference,
-  onChangeBillingPreference,
   activeSubscriptions = [],
   allSubscriptions = [],
   reloadSubscriptionSelf,
@@ -98,8 +96,10 @@ const RechargeCard = ({
   const onlineFormApiRef = useRef(null);
   const redeemFormApiRef = useRef(null);
   const showAmountSkeleton = useMinimumLoadingTime(amountLoading);
-  const shouldShowSubscription =
-    !subscriptionLoading && subscriptionPlans.length > 0;
+  // Render subscription card during loading to avoid the
+  // topup-content -> subscription-content flash on first paint.
+  const shouldRenderSubscription =
+    subscriptionLoading || subscriptionPlans.length > 0;
   const topupContent = (
     <Space vertical style={{ width: '100%' }}>
       {/* 统计数据 */}
@@ -623,7 +623,7 @@ const RechargeCard = ({
         </Button>
       </div>
 
-      {shouldShowSubscription ? (
+      {shouldRenderSubscription ? (
         <div className='py-2'>
           <SubscriptionPlansCard
             t={t}
@@ -634,8 +634,6 @@ const RechargeCard = ({
             enableOnlineTopUp={enableOnlineTopUp}
             enableStripeTopUp={enableStripeTopUp}
             enableCreemTopUp={enableCreemTopUp}
-            billingPreference={billingPreference}
-            onChangeBillingPreference={onChangeBillingPreference}
             activeSubscriptions={activeSubscriptions}
             allSubscriptions={allSubscriptions}
             reloadSubscriptionSelf={reloadSubscriptionSelf}

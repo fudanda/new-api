@@ -23,7 +23,6 @@ import {
   Button,
   Card,
   Divider,
-  Select,
   Skeleton,
   Space,
   Tag,
@@ -78,8 +77,6 @@ const SubscriptionPlansCard = ({
   enableOnlineTopUp = false,
   enableStripeTopUp = false,
   enableCreemTopUp = false,
-  billingPreference,
-  onChangeBillingPreference,
   activeSubscriptions = [],
   allSubscriptions = [],
   reloadSubscriptionSelf,
@@ -219,15 +216,6 @@ const SubscriptionPlansCard = ({
   const hasActiveSubscription = activeSubscriptions.length > 0;
   const hasAnySubscription = allSubscriptions.length > 0;
   const disableSubscriptionPreference = !hasActiveSubscription;
-  const isSubscriptionPreference =
-    billingPreference === 'subscription_first' ||
-    billingPreference === 'subscription_only';
-  const displayBillingPreference =
-    disableSubscriptionPreference && isSubscriptionPreference
-      ? 'wallet_first'
-      : billingPreference;
-  const subscriptionPreferenceLabel =
-    billingPreference === 'subscription_only' ? t('仅用订阅') : t('优先订阅');
 
   const planPurchaseCountMap = useMemo(() => {
     const map = new Map();
@@ -345,29 +333,9 @@ const SubscriptionPlansCard = ({
                 )}
               </div>
               <div className='flex items-center gap-2'>
-                <Select
-                  value={displayBillingPreference}
-                  onChange={onChangeBillingPreference}
-                  size='small'
-                  optionList={[
-                    {
-                      value: 'subscription_first',
-                      label: disableSubscriptionPreference
-                        ? `${t('优先订阅')} (${t('无生效')})`
-                        : t('优先订阅'),
-                      disabled: disableSubscriptionPreference,
-                    },
-                    { value: 'wallet_first', label: t('优先钱包') },
-                    {
-                      value: 'subscription_only',
-                      label: disableSubscriptionPreference
-                        ? `${t('仅用订阅')} (${t('无生效')})`
-                        : t('仅用订阅'),
-                      disabled: disableSubscriptionPreference,
-                    },
-                    { value: 'wallet_only', label: t('仅用钱包') },
-                  ]}
-                />
+                <Tag color='blue' size='small' shape='circle'>
+                  {t('优先订阅')}
+                </Tag>
                 <Button
                   size='small'
                   theme='light'
@@ -383,11 +351,9 @@ const SubscriptionPlansCard = ({
                 />
               </div>
             </div>
-            {disableSubscriptionPreference && isSubscriptionPreference && (
+            {disableSubscriptionPreference && (
               <Text type='tertiary' size='small'>
-                {t('已保存偏好为')}
-                {subscriptionPreferenceLabel}
-                {t('，当前无生效订阅，将自动使用钱包')}
+                {t('扣费方式已固定为优先订阅，当前无生效订阅时将自动使用钱包')}
               </Text>
             )}
 
