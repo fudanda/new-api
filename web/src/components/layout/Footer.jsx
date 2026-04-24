@@ -233,7 +233,7 @@ const FooterBar = () => {
             </div>
             <div className='text-sm flex items-center gap-3 flex-shrink-0 !text-semi-color-text-1'>
               <span> <a href="https://beian.miit.gov.cn/index/#/Integrated/index" target="_blank" rel="noopener noreferrer">津ICP备16005965号-2</a></span>
-              {/* <span className='!text-semi-color-text-1'>
+              <span className='!text-semi-color-text-1'>
                 {t('设计与开发由')}{' '}
               </span>
               <a
@@ -243,7 +243,7 @@ const FooterBar = () => {
                 className='!text-semi-color-primary font-medium'
               >
                 New API
-              </a> */}
+              </a>
             </div>
           </div>
         </footer>
