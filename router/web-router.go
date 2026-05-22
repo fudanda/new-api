@@ -2,7 +2,6 @@ package router
 
 import (
 	"embed"
-	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -15,6 +14,8 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
+
+const lzclawSetupDownloadBaseURL = "https://lzclaw-1305936856.cos.ap-beijing.myqcloud.com/"
 
 func SetWebRouter(router *gin.Engine, buildFS embed.FS, indexPage []byte, lzclawPage []byte, lzclawQRCode []byte) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
@@ -74,18 +75,12 @@ func serveLzclawHTML(c *gin.Context, lzclawPage []byte) {
 
 func serveLzclawDownload(c *gin.Context) {
 	c.Set(middleware.RouteTagKey, "web")
-	setupFileName := getLZClawSetupFileName()
-	filePath, err := resolveRuntimeFilePath(filepath.Join("public", setupFileName))
-	if err != nil {
-		controller.RelayNotFound(c)
-		return
-	}
 	c.Header("Cache-Control", "no-cache")
-	c.FileAttachment(filePath, setupFileName)
+	c.Redirect(http.StatusFound, getLZClawSetupDownloadURL())
 }
 
-func getLZClawSetupFileName() string {
-	return fmt.Sprintf("LZClaw-%s.exe", common.LZClawDownloadVersion)
+func getLZClawSetupDownloadURL() string {
+	return lzclawSetupDownloadBaseURL + "LZClaw-" + common.LZClawDownloadVersion + ".exe"
 }
 
 func resolveRuntimeFilePath(fileName string) (string, error) {
